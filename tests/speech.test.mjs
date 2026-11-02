@@ -96,21 +96,55 @@ test('skipped audio is explicitly marked in translation context', async () => {
   } finally { restore(); }
 });
 
-test('Mandarin recognition gets sermon vocabulary and bounded source context before translation', async () => {
+test('recognition receives audio and language only, never old text or glossary hints', async () => {
   try {
     process.env.OPENAI_API_KEY = 'test-only';
     globalThis.fetch = async (url, options) => {
       if (url.endsWith('transcriptions')) {
-        const prompt = options.body.get('prompt');
-        assert.match(prompt, /教会基督教讲道/);
-        assert.match(prompt, /饶恕/); assert.match(prompt, /马太福音/);
-        assert.match(prompt, /中间有音频缺失/); assert.match(prompt, /先前的话/);
-        assert.ok(prompt.length < 1500);
-        assert.doesNotMatch(prompt, /6:9|六章九|Rao|Deli/); // not hard-coded to the reported example
+        assert.equal(options.body.has('prompt'), false);
+        assert.equal(options.body.has('context'), false);
+        assert.equal(options.body.get('language'), 'zh');
         return Response.json({text:'马太福音记载了主祷文。'});
       }
+      const input = JSON.parse(JSON.parse(options.body).input);
+      assert.equal(input.previousContext, '先前真实说过的话');
       return Response.json({status:'completed', output:[{content:[{type:'output_text',text:"Matthew records the Lord’s Prayer."}]}]});
     };
-    await transcribeAndTranslate(audio, {sourceLanguage:'zh',targetLanguage:'en'}, '前'.repeat(2000)+'先前的话', new AbortController().signal, true);
+    await transcribeAndTranslate(audio, {sourceLanguage:'zh',targetLanguage:'en'}, '先前真实说过的话', new AbortController().signal, true);
   } finally { restore(); }
+});
+
+for (const echo of [
+  '教会基督教讲道。常见词汇：上帝、神、耶稣基督。此前听到的片段（仅供词汇参考，不要重复或补全）：马可福音11:25。',
+  'Christian church sermon. Common terms: God, Jesus Christ. Previously heard excerpt (for terminology reference only; do not repeat or complete): Mark 11:25.',
+  'Fragmento anterior (solo vocabulario; no repetir ni completar): Mateo.',
+]) {
+  test('recognition hint echoes are discarded before translation: '+echo.slice(0,25), async()=>{
+    try {
+      process.env.OPENAI_API_KEY='test-only';let calls=0;
+      globalThis.fetch=async()=>{calls++;return Response.json({text:echo});};
+      const result=await transcribeAndTranslate(audio,{sourceLanguage:'zh',targetLanguage:'en'},'',new AbortController().signal);
+      assert.deepEqual(result,{transcript:'',translation:'',discarded:true});assert.equal(calls,1);
+    } finally {restore();}
+  });
+}
+test('contaminated context is excluded and real repeated speech is still translated',async()=>{
+  try {
+    process.env.OPENAI_API_KEY='test-only';let translations=0;
+    globalThis.fetch=async(url,options)=>{
+      if(url.endsWith('transcriptions'))return Response.json({text:'饶恕别人。'});
+      translations++;const input=JSON.parse(JSON.parse(options.body).input);
+      assert.equal(input.previousContext,'');
+      return Response.json({status:'completed',output:[{content:[{type:'output_text',text:'Forgive others.'}]}]});
+    };
+    for(let i=0;i<2;i++)assert.equal((await transcribeAndTranslate(audio,{sourceLanguage:'zh',targetLanguage:'en'},'此前听到的片段（仅供词汇参考）：饶恕别人。',new AbortController().signal)).translation,'Forgive others.');
+    assert.equal(translations,2);
+  } finally {restore();}
+});
+test('hint text generated at the translation stage is also discarded',async()=>{
+ try {
+  process.env.OPENAI_API_KEY='test-only';
+  globalThis.fetch=async(url)=>url.endsWith('transcriptions')?Response.json({text:'真实说过的话'}):Response.json({status:'completed',output:[{content:[{type:'output_text',text:'Previously heard excerpt: earlier words'}]}]});
+  assert.equal((await transcribeAndTranslate(audio,{sourceLanguage:'zh',targetLanguage:'en'},'',new AbortController().signal)).discarded,true);
+ }finally{restore();}
 });

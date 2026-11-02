@@ -8,7 +8,7 @@ import { LatestQueue, LIVE_TIMING, recentReloads, type VocalMode } from "@/lib/l
 
 const RECOVERY_KEY = "sermon-recovery-v1";
 const RELOAD_KEY = "sermon-reloads-v1";
-type Result = { transcript: string; translation: string };
+type Result = { transcript: string; translation: string; discarded?: boolean };
 function readStored(key: string) { try { return JSON.parse(sessionStorage.getItem(key) || "null"); } catch { return null; } }
 function clearRecovery() { try { sessionStorage.removeItem(RECOVERY_KEY); } catch {} }
 
@@ -94,7 +94,7 @@ export function useLiveTranslation() {
   }
   async function start(d = direction, recovery = false) {
     release(); clearRecovery();
-    if (!recovery) { restartCount.current = 0; failures.current = 0; }
+    if (!recovery) { restartCount.current = 0; failures.current = 0; context.current = ""; contextAt.current = 0; gap.current = false; }
     setError(null); setNotice(null); setResumeNeeded(false); setHymn(false);
     setRecovering(recovery); setStatus("requesting"); mode.current = "speech";
     active.current = true;
@@ -120,9 +120,12 @@ export function useLiveTranslation() {
             if (resume) queue.current?.push(resume.audio, resume.startedAt);
           } else queue.current?.hold(next !== "speech");
         }, () => { if (valid()) setNotice("Hymn detection is unavailable. Translation is still on."); },
-        (rms, durationMs) => { if (valid()) capture.current?.observeLevel(rms, durationMs); });
+        (rms, durationMs) => { if (valid()) capture.current?.observeLevel(rms, durationMs); },
+        () => { if (valid()) { stop(); setResumeNeeded(true); setError("Audio detection stopped. Tap Resume to continue listening."); } });
         detector.current = listener;
-      } catch { setNotice("Hymn detection is unavailable. Translation is still on."); }
+      } catch {
+        stop(); setResumeNeeded(true); setError("Audio detection could not start. Tap Resume to try again."); return;
+      }
     }
     let lastAudio = Date.now();
     const beginCapture = () => {
@@ -134,7 +137,7 @@ export function useLiveTranslation() {
         lastAudio = Date.now();
         if (mode.current === "hymn") return;
         queue.current?.push(audio, startedAt);
-      }, () => { if (valid()) recover(d); });
+      }, () => { if (valid()) recover(d); }, () => { if (valid()) lastAudio = Date.now(); });
       capture.current.start();
     };
     try {
@@ -170,6 +173,7 @@ export function useLiveTranslation() {
         result: result => {
           if (!valid() || mode.current !== "speech") { gap.current = true; return; }
           failures.current = 0; restartCount.current = 0;
+          if (result.discarded) { context.current = ""; contextAt.current = 0; gap.current = true; return; }
           if (result.translation) {
             context.current = (context.current + " " + result.transcript).slice(-1800); contextAt.current = Date.now();
             append(result.translation, result.transcript);

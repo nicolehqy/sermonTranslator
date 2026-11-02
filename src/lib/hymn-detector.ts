@@ -12,24 +12,27 @@ export class HymnDetector {
   private closed = false;
   private busy = false;
   private gate = new HymnGate();
+  private classifierFailed = false;
+  private lastLevel = Date.now();
+  private levelWatchdog: ReturnType<typeof setInterval> | null = null;
   private watchdog: ReturnType<typeof setInterval> | null = null;
   private lastResult = Date.now();
   private lastSample = 0;
   private pendingSamples: Float32Array | null = null;
   private speechTail: Float32Array[] = [];
-  constructor(private onMode: (mode: VocalMode, resume?: { audio: Blob; startedAt: number }) => void, private onUnavailable: () => void, private onLevel: (rms: number, durationMs: number) => void = () => {}) {
-    void this.audio.resume().catch(() => this.fail());
+  constructor(private onMode: (mode: VocalMode, resume?: { audio: Blob; startedAt: number }) => void, private onUnavailable: () => void, private onLevel: (rms: number, durationMs: number) => void = () => {}, private onAudioUnavailable: () => void = onUnavailable) {
+    void this.audio.resume().catch(() => this.failAudio());
   }
   async start(stream: MediaStream) {
     if (this.closed) return;
     try {
       const worker = new Worker("/audio/hymn-worker.js");
       this.worker = worker;
-      this.watchdog = setInterval(() => { if (Date.now() - this.lastResult > 20000) this.fail(); }, 2000);
-      worker.onerror = () => this.fail();
+      this.watchdog = setInterval(() => { if (Date.now() - this.lastResult > 20000) this.failClassifier(); }, 2000);
+      worker.onerror = () => this.failClassifier();
       worker.onmessage = event => {
-        if (this.closed) return;
-        if (event.data.error) { this.fail(); return; }
+        if (this.closed || this.worker !== worker) return;
+        if (event.data.error) { this.failClassifier(); return; }
         if (event.data.ready) { this.busy = false; this.lastResult = Date.now(); return; }
         this.busy = false;
         this.lastResult = Date.now();
@@ -46,6 +49,8 @@ export class HymnDetector {
           : undefined;
         this.onMode(next, resume);
       };
+      this.lastLevel = Date.now();
+      this.levelWatchdog = setInterval(() => { if (Date.now() - this.lastLevel > 15000) this.failAudio(); }, 2000);
       this.busy = true;
       worker.postMessage({ init: true });
       await this.audio.audioWorklet.addModule("/audio/pcm-worklet.js");
@@ -57,9 +62,10 @@ export class HymnDetector {
       this.node.port.onmessage = event => {
         if (this.closed) return;
         if (typeof event.data.level === "number") {
+          this.lastLevel = Date.now();
           this.onLevel(event.data.level, event.data.durationMs); return;
         }
-        if (this.busy) return;
+        if (this.busy || !this.worker) return;
         const samples = event.data.samples;
         if (!(samples instanceof Float32Array)) return;
         this.busy = true;
@@ -67,14 +73,24 @@ export class HymnDetector {
         worker.postMessage({ samples, at: Date.now(), sampleRate: this.audio.sampleRate }, [samples.buffer]);
       };
       this.source.connect(this.node); this.node.connect(this.mute); this.mute.connect(this.audio.destination);
-    } catch { this.fail(); }
+    } catch { this.failAudio(); }
   }
-  private fail() { if (!this.closed) { this.stop(); this.onMode("speech"); this.onUnavailable(); } }
+  private failClassifier() {
+    if (this.closed || this.classifierFailed) return;
+    this.classifierFailed = true;
+    if (this.watchdog) clearInterval(this.watchdog);
+    this.worker?.terminate(); this.worker = null;
+    this.pendingSamples = null; this.speechTail = [];
+    // Keep level monitoring alive: a classifier failure must not bypass the silence gate.
+    this.onMode("speech"); this.onUnavailable();
+  }
+  private failAudio() { if (!this.closed) { this.stop(); this.onAudioUnavailable(); } }
   stop() {
     this.closed = true;
     this.pendingSamples = null; this.speechTail = [];
     if (this.watchdog) clearInterval(this.watchdog);
-    this.worker?.terminate();
+    if (this.levelWatchdog) clearInterval(this.levelWatchdog);
+    this.worker?.terminate(); this.worker = null;
     if (this.node) this.node.port.onmessage = null;
     this.source?.disconnect(); this.node?.disconnect(); this.mute?.disconnect();
     void this.audio.close().catch(() => {});

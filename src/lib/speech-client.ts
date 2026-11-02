@@ -4,7 +4,7 @@ export class SpeechRequestError extends Error {
   constructor(message: string, public status: number, public code = "") { super(message); }
   get fatal() { return [401, 403].includes(this.status) || ["configuration", "quota"].includes(this.code); }
 }
-export async function processSpeech(audio: Blob, direction: TranslationDirection, context: string, signal: AbortSignal, gap = false): Promise<{ transcript: string; translation: string }> {
+export async function processSpeech(audio: Blob, direction: TranslationDirection, context: string, signal: AbortSignal, gap = false): Promise<{ transcript: string; translation: string; discarded?: boolean }> {
   const form = new FormData();
   const extension = audio.type.includes("wav") ? "wav" : audio.type.includes("mp4") ? "mp4" : audio.type.includes("ogg") ? "ogg" : "webm";
   form.set("audio", audio, `speech.${extension}`);
@@ -28,7 +28,7 @@ export class SpeechCapture {
   private startedAt = 0;
   private wallStartedAt = 0;
   private boundary = new PhraseBoundary();
-  constructor(private stream: MediaStream, private onAudio: (audio: Blob, startedAt: number) => void, private onError: () => void) {}
+  constructor(private stream: MediaStream, private onAudio: (audio: Blob, startedAt: number) => void, private onError: () => void, private onSegment: () => void = () => {}) {}
   start() {
     if (this.cancelled) return;
     try {
@@ -51,6 +51,8 @@ export class SpeechCapture {
       recorder.onerror = () => { this.cancel(); this.onError(); };
       recorder.onstop = () => {
         if (this.cancelled) return;
+        if (this.timer) clearTimeout(this.timer);
+        this.timer = null;
         const mimeType = chunks.find(chunk => /^audio\//i.test(chunk.type))?.type
           || recordingType || recorder.mimeType;
         if (!mimeType || !/^audio\//i.test(mimeType)) {
@@ -58,7 +60,10 @@ export class SpeechCapture {
         }
         const blob = new Blob(chunks, { type: mimeType });
         this.recorder = null;
-        if (blob.size) this.onAudio(blob, this.wallStartedAt);
+        // Empty/silent recordings must never reach speech recognition. This
+        // also fails closed when the level monitor has not supplied evidence.
+        this.onSegment();
+        if (blob.size && this.boundary.hasSpeechActivity) this.onAudio(blob, this.wallStartedAt);
         if (!this.cancelled && !this.finishing && this.stream.active) this.start();
       };
       this.boundary = new PhraseBoundary();

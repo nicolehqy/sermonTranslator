@@ -86,12 +86,18 @@ export class PhraseBoundary {
   private speechSeen = false;
   private quietMs = 0;
   private peak = 0;
+  private voiceRunMs = 0;
+  private longestVoiceRunMs = 0;
+  get hasSpeechActivity() { return this.longestVoiceRunMs >= 200; }
   observe(rms: number, durationMs: number, elapsedMs: number) {
     if (!Number.isFinite(rms) || !Number.isFinite(durationMs) || durationMs <= 0) return false;
     this.peak = Math.max(rms, this.peak * 0.995);
     const threshold = Math.max(0.008, this.peak * 0.12);
-    if (rms >= threshold) { this.speechSeen = true; this.quietMs = 0; }
-    else this.quietMs += Math.min(durationMs, 150);
+    if (rms >= threshold) {
+      this.speechSeen = true; this.quietMs = 0;
+      this.voiceRunMs += Math.min(durationMs, 150);
+      this.longestVoiceRunMs = Math.max(this.longestVoiceRunMs, this.voiceRunMs);
+    } else { this.quietMs += Math.min(durationMs, 150); this.voiceRunMs = 0; }
     return this.speechSeen && elapsedMs >= 3000 && this.quietMs >= 600;
   }
 }

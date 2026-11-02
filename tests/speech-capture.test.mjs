@@ -31,6 +31,8 @@ for (const format of ['audio/webm;codecs=opus', 'audio/ogg;codecs=opus', 'audio/
     const capture = new SpeechCapture({active:true}, blob => { output = blob; }, assert.fail);
     try {
       capture.start();
+      now = 100; capture.observeLevel(.1, 100);
+      now = 200; capture.observeLevel(.1, 100);
       now = 600;
       capture.finish();
       assert.equal(recorder.mimeType, '');
@@ -74,4 +76,50 @@ test('Stop immediately after recording starts discards the tiny final segment', 
     capture.cancel(); globalThis.MediaRecorder = original;
     Object.defineProperty(globalThis, 'performance', clock);
   }
+});
+
+test('silence never uploads nonempty audio containers; speaking resumes without a restart', () => {
+  const original = globalThis.MediaRecorder;
+  const clock = Object.getOwnPropertyDescriptor(globalThis, 'performance');
+  let now = 0, recorder, completed = 0;
+  const uploads = [];
+  Object.defineProperty(globalThis, 'performance', { configurable:true, value:{now:()=>now} });
+  globalThis.MediaRecorder = class {
+    static isTypeSupported() { return true; }
+    mimeType='audio/mp4'; state='inactive';
+    constructor() { recorder=this; }
+    start() { this.state='recording'; }
+    stop() {
+      this.state='inactive';
+      this.ondataavailable?.({data:new Blob(['nonempty compressed audio even during silence'],{type:'audio/mp4'})});
+      this.onstop?.();
+    }
+  };
+  const capture = new SpeechCapture({active:true}, audio=>uploads.push(audio), assert.fail, ()=>completed++);
+  const levels = (count, rms) => { for(let i=0;i<count;i++){ now+=100;capture.observeLevel(rms,100); } };
+  const quiet = () => { levels(80,.0001); recorder.stop(); };
+  const speak = () => { levels(10,.1); levels(20,.0001); };
+  try {
+    capture.start(); quiet(); quiet();
+    assert.equal(uploads.length,0);assert.equal(completed,2);
+    speak();assert.equal(uploads.length,1);
+    quiet();quiet();assert.equal(uploads.length,1);assert.equal(completed,5);
+    speak();assert.equal(uploads.length,2); // intentional repetition remains valid
+    assert.equal(recorder.state,'recording');
+  } finally { capture.cancel();globalThis.MediaRecorder=original;Object.defineProperty(globalThis,'performance',clock); }
+});
+
+test('missing level evidence and a single short click cannot upload a segment', () => {
+  const original=globalThis.MediaRecorder;
+  let recorder;
+  globalThis.MediaRecorder=class {
+    static isTypeSupported(){return true;} mimeType='audio/webm';state='inactive';
+    constructor(){recorder=this;} start(){this.state='recording';}
+    stop(){this.state='inactive';this.ondataavailable?.({data:new Blob(['audio'],{type:'audio/webm'})});this.onstop?.();}
+  };
+  const capture=new SpeechCapture({active:true},assert.fail,assert.fail);
+  try {
+    capture.start();recorder.stop(); // no audio-level callbacks at all
+    capture.observeLevel(.5,100);capture.observeLevel(.0001,100);recorder.stop();
+  } finally {capture.cancel();globalThis.MediaRecorder=original;}
 });
