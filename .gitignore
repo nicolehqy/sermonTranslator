@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.env*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+.vercel
+
+# Generated from the pinned MediaPipe package during dev/build
+public/audio/vendor/
