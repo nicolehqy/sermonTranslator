@@ -13,15 +13,16 @@ self.onmessage = async ({ data }) => {
       return;
     }
     const results = classifier.classify(data.samples, data.sampleRate);
-    let singing = 0, speech = 0;
+    let singing = 0, speech = 0, music = 0;
     for (const result of results) {
       for (const head of result.classifications) {
         for (const category of head.categories) {
-          if (["Singing", "Choir", "Child singing"].includes(category.categoryName)) singing = Math.max(singing, category.score);
+          if (["Singing", "Choir", "Child singing", "Chant", "Mantra", "Humming"].includes(category.categoryName)) singing = Math.max(singing, category.score);
+          if (["Music", "Vocal music", "Christian music", "Gospel music"].includes(category.categoryName)) music = Math.max(music, category.score);
           if (["Speech", "Conversation", "Narration, monologue"].includes(category.categoryName)) speech = Math.max(speech, category.score);
         }
       }
     }
-    self.postMessage({ singing, speech, at: data.at });
+    self.postMessage({ singing, speech, music, at: data.at });
   } catch { self.postMessage({ error: true }); }
 };

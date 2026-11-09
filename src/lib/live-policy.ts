@@ -1,20 +1,42 @@
 // Timings are measured from the beginning of each recording, not its upload.
 export const LIVE_TIMING = { segmentMs: 8000, maxAgeMs: 16000, requestMs: 8000, contextAgeMs: 30000 };
 export type VocalMode = "speech" | "candidate" | "hymn";
+// Scores are independent sound categories, not mutually exclusive probabilities.
+export function clearSpeech(singing: number, speech: number) {
+  return speech >= 0.45 && speech > singing;
+}
 export class HymnGate {
   mode: VocalMode = "speech";
   private singing = 0;
   private speaking = 0;
-  discontinuity() { this.singing = 0; this.speaking = 0; if (this.mode === "candidate") this.mode = "speech"; }
-  update(singing: number, speech: number, durationMs: number): VocalMode {
-    const clearSpeech = speech >= 0.45 && speech > singing;
-    const clearSinging = singing >= 0.35 && singing > speech * 1.2;
+  private uncertain = 0;
+  // Missing audio never counts as singing. A short missed window need not erase
+  // real evidence, but repeated/long gaps must restart confirmation.
+  discontinuity(missingMs = Infinity) {
+    this.speaking = 0;
+    this.uncertain += Math.max(0, missingMs);
+    if (this.uncertain > 2000) {
+      this.singing = 0;
+      if (this.mode === "candidate") this.mode = "speech";
+    }
+  }
+  update(singing: number, speech: number, durationMs: number, music = 0): VocalMode {
+    if (![singing, speech, music, durationMs].every(Number.isFinite) || durationMs <= 0) return this.mode;
+    const spoken = clearSpeech(singing, speech);
+    const musical = !spoken && ((singing >= 0.35 && singing > speech * 1.2) || (music >= 0.5 && speech < 0.25));
     if (this.mode === "hymn") {
-      this.speaking = clearSpeech ? this.speaking + durationMs : 0;
-      if (this.speaking >= 2000) { this.mode = "speech"; this.singing = 0; this.speaking = 0; }
+      this.speaking = spoken ? this.speaking + durationMs : 0;
+      // Silence or an instrumental break is not evidence that preaching resumed.
+      if (this.speaking >= 2000) {
+        this.mode = "speech"; this.singing = 0; this.speaking = 0; this.uncertain = 0;
+      }
+    } else if (spoken) {
+      this.mode = "speech"; this.singing = 0; this.uncertain = 0;
+    } else if (musical) {
+      this.singing += durationMs; this.uncertain = 0;
+      this.mode = this.singing >= 5000 ? "hymn" : "candidate";
     } else {
-      this.singing = clearSinging ? this.singing + durationMs : 0;
-      this.mode = this.singing >= 5000 ? "hymn" : this.singing > 0 ? "candidate" : "speech";
+      this.discontinuity(durationMs);
     }
     return this.mode;
   }

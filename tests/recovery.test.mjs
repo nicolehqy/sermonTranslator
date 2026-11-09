@@ -13,11 +13,11 @@ const flush = async () => { for (let i=0; i<20; i++) await Promise.resolve(); };
 function harness({ speechError = null, saved = null, permissionDenied = false } = {}) {
   const slots = []; let index = 0; const effects = []; const timers = new Map(); const handlers = {}; let timerId = 0, reloads = 0, stops = 0;
   const storage = new Map(saved ? [['sermon-recovery-v1', JSON.stringify(saved)]] : []);
-  const intervals = new Map(); let now = Date.now(); let audioUnavailable;
+  const intervals = new Map(); let now = Date.now(); let audioUnavailable, classifierUnavailable;
   const captures = []; let mode; let speechCalls = 0;
   class MicrophoneSession { async start() { if (permissionDenied) throw new DOMException('denied', 'NotAllowedError'); return true; } stop() { stops++; } getStream() { return {active:true}; } }
   class SpeechCapture { constructor(stream, onAudio, onError, onSegment) { this.onSegment=onSegment; this.onAudio=onAudio; this.onError=onError; captures.push(this); } start() {} cancel() { this.cancelled = true; } }
-  class HymnDetector { constructor(callback, unavailable, level, failAudio) { mode=callback; audioUnavailable=failAudio; } start() {} stop() {} }
+  class HymnDetector { constructor(callback, unavailable, level, failAudio) { mode=callback; audioUnavailable=failAudio; classifierUnavailable=unavailable; } start() {} stop() {} }
   const react = {
     useRef(value) { const i=index++; return slots[i] ??= {current:value}; },
     useState(value) { const i=index++; if (!(i in slots)) slots[i]=value; return [slots[i], value => { slots[i] = typeof value === 'function' ? value(slots[i]) : value; }]; },
@@ -45,7 +45,7 @@ function harness({ speechError = null, saved = null, permissionDenied = false } 
   vm.runInNewContext(source,scope);
   const render=()=>{index=0;return exports.useLiveTranslation();};
   render(); effects.forEach(fn=>fn());
-  return {render,storage,captures, audioUnavailable:()=>audioUnavailable(),
+  return {render,storage,captures, audioUnavailable:()=>audioUnavailable(), classifierUnavailable:()=>classifierUnavailable(),
     quiet() { now+=8000;captures.at(-1).onSegment(); for(const {fn} of intervals.values())fn(); },
     mode:value=>mode(value),get reloads(){return reloads;},get stops(){return stops;},get speechCalls(){return speechCalls;},
     async timer(ms) { for(const [id,t] of timers) if(t.ms===ms){timers.delete(id);t.fn();break;} await flush(); },
@@ -77,7 +77,7 @@ test('hymn mode suppresses uploads, adds one marker, and speech resumes', async(
 });
 test('reload loop is capped across page loads', async()=>{
   const h=harness({speechError:new Error('timeout')});
-  h.storage.set('sermon-reloads-v1',JSON.stringify([Date.now()-1000,Date.now()]));
+  h.storage.set('sermon-reloads-v1',JSON.stringify([Date.now()-1000,Date.now()-500]));
   h.render().toggle();await flush();
   for(let i=0;i<3;i++) await h.segment();await h.timer(1500);
   for(let i=0;i<3;i++) await h.segment();await h.timer(1500);
@@ -99,4 +99,17 @@ test('loss of audio-level monitoring pauses rather than uploading unverified aud
  const h=harness();h.render().toggle();await flush();h.audioUnavailable();
  assert.equal(h.render().running,false);assert.equal(h.render().resumeNeeded,true);
  assert.equal(h.speechCalls,0);assert.equal(h.reloads,0);
+});
+
+
+test('classifier failure pauses instead of translating hymns without protection', async()=>{
+ const h=harness();h.render().toggle();await flush();h.classifierUnavailable();
+ assert.equal(h.render().running,false);assert.equal(h.render().resumeNeeded,true);
+ assert.match(h.render().error,/Music detection/);assert.equal(h.speechCalls,0);
+});
+test('candidate release discards the held recording before resuming speech', async()=>{
+ const h=harness();h.render().toggle();await flush();h.mode('candidate');await h.segment();
+ assert.equal(h.speechCalls,0);const old=h.captures.at(-1);
+ h.mode('speech');await flush();assert.equal(h.speechCalls,0);assert.equal(old.cancelled,true);
+ await h.segment();assert.equal(h.speechCalls,1);h.render().toggle();
 });

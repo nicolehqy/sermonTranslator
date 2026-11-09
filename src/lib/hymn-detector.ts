@@ -1,5 +1,5 @@
 import { pcmWav } from "./pcm-audio";
-import { HymnGate, type VocalMode } from "./live-policy";
+import { clearSpeech, HymnGate, type VocalMode } from "./live-policy";
 
 // The AudioContext is created/resumed directly inside the Start gesture for Safari.
 // Classification runs off the UI thread; only a short PCM window is retained.
@@ -36,16 +36,17 @@ export class HymnDetector {
         if (event.data.ready) { this.busy = false; this.lastResult = Date.now(); return; }
         this.busy = false;
         this.lastResult = Date.now();
-        if (this.lastSample && event.data.at - this.lastSample > 1500) { this.gate.discontinuity(); this.speechTail = []; }
+        const previous = this.gate.mode;
+        if (this.lastSample && event.data.at - this.lastSample > 1500) { this.gate.discontinuity(event.data.at - this.lastSample - 1000); this.speechTail = []; }
         if (this.pendingSamples) this.speechTail = [...this.speechTail.slice(-1), this.pendingSamples];
         this.pendingSamples = null;
         this.lastSample = event.data.at;
-        const previous = this.gate.mode;
-        const next = this.gate.update(event.data.singing, event.data.speech, 1000);
+        const next = this.gate.update(event.data.singing, event.data.speech, 1000, event.data.music);
         // Replay the two classified speech windows so confirmation does not
         // throw away the first spoken words after a hymn.
-        const resume = previous === "hymn" && next === "speech" && this.speechTail.length === 2
-          ? { audio: pcmWav(this.speechTail, this.audio.sampleRate), startedAt: event.data.at - 2000 }
+        const tail = this.speechTail.slice(previous === "hymn" ? -2 : -1);
+        const resume = previous !== "speech" && next === "speech" && clearSpeech(event.data.singing, event.data.speech) && tail.length > 0
+          ? { audio: pcmWav(tail, this.audio.sampleRate), startedAt: event.data.at - tail.length * 1000 }
           : undefined;
         this.onMode(next, resume);
       };
@@ -82,7 +83,7 @@ export class HymnDetector {
     this.worker?.terminate(); this.worker = null;
     this.pendingSamples = null; this.speechTail = [];
     // Keep level monitoring alive: a classifier failure must not bypass the silence gate.
-    this.onMode("speech"); this.onUnavailable();
+    this.onUnavailable();
   }
   private failAudio() { if (!this.closed) { this.stop(); this.onAudioUnavailable(); } }
   stop() {

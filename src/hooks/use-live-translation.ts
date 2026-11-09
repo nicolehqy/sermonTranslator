@@ -113,13 +113,15 @@ export function useLiveTranslation() {
             queue.current?.cancel(); queue.current?.hold(true);
             context.current = ""; gap.current = true;
             append("Hymn ♫");
-          } else if (previous === "hymn" && next === "speech") {
-            // Replace mixed recorder audio with the confirmed speech PCM tail.
+          } else if (previous !== "speech" && next === "speech") {
+            // Discard held/mixed audio, including a suspected hymn that did not
+            // reach confirmation. Replay only positively identified speech.
+            queue.current?.cancel(); gap.current = true;
             capture.current?.cancel(); beginCapture();
             queue.current?.hold(false);
             if (resume) queue.current?.push(resume.audio, resume.startedAt);
           } else queue.current?.hold(next !== "speech");
-        }, () => { if (valid()) setNotice("Hymn detection is unavailable. Translation is still on."); },
+        }, () => { if (valid()) { stop(); setResumeNeeded(true); setError("Music detection is unavailable. Tap Resume to try again."); } },
         (rms, durationMs) => { if (valid()) capture.current?.observeLevel(rms, durationMs); },
         () => { if (valid()) { stop(); setResumeNeeded(true); setError("Audio detection stopped. Tap Resume to continue listening."); } });
         detector.current = listener;

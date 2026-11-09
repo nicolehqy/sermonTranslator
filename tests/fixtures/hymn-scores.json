@@ -1,0 +1,1452 @@
+[
+  {
+    "file": "clip.mp3",
+    "rows": [
+      {
+        "second": 270,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.94140625
+      },
+      {
+        "second": 271,
+        "singing": 0.01171875,
+        "speech": 0.03125,
+        "music": 0.95703125
+      },
+      {
+        "second": 272,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 273,
+        "singing": 0.03125,
+        "speech": 0.015625,
+        "music": 0.8515625
+      },
+      {
+        "second": 274,
+        "singing": 0.33203125,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 275,
+        "singing": 0.0078125,
+        "speech": 0.03125,
+        "music": 0.98046875
+      },
+      {
+        "second": 276,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.94140625
+      },
+      {
+        "second": 277,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.94140625
+      },
+      {
+        "second": 278,
+        "singing": 0.01171875,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 279,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 280,
+        "singing": 0.109375,
+        "speech": 0.04296875,
+        "music": 0.80078125
+      },
+      {
+        "second": 281,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 282,
+        "singing": 0.04296875,
+        "speech": 0.03125,
+        "music": 0.8515625
+      },
+      {
+        "second": 283,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 284,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 285,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 286,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 287,
+        "singing": 0.109375,
+        "speech": 0.015625,
+        "music": 0.890625
+      },
+      {
+        "second": 288,
+        "singing": 0.03125,
+        "speech": 0.04296875,
+        "music": 0.8515625
+      },
+      {
+        "second": 289,
+        "singing": 0.015625,
+        "speech": 0.03125,
+        "music": 0.94140625
+      },
+      {
+        "second": 290,
+        "singing": 0.03125,
+        "speech": 0.015625,
+        "music": 0.80078125
+      },
+      {
+        "second": 291,
+        "singing": 0.03125,
+        "speech": 0.015625,
+        "music": 0.890625
+      },
+      {
+        "second": 292,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 293,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 294,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 295,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 296,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 297,
+        "singing": 0.03125,
+        "speech": 0.015625,
+        "music": 0.8515625
+      },
+      {
+        "second": 298,
+        "singing": 0.04296875,
+        "speech": 0.03125,
+        "music": 0.890625
+      },
+      {
+        "second": 299,
+        "singing": 0.109375,
+        "speech": 0.03125,
+        "music": 0.8515625
+      },
+      {
+        "second": 300,
+        "singing": 0.01171875,
+        "speech": 0.01953125,
+        "music": 0.94140625
+      },
+      {
+        "second": 301,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 302,
+        "singing": 0.04296875,
+        "speech": 0.03125,
+        "music": 0.80078125
+      },
+      {
+        "second": 303,
+        "singing": 0.015625,
+        "speech": 0.04296875,
+        "music": 0.95703125
+      },
+      {
+        "second": 304,
+        "singing": 0.03125,
+        "speech": 0.03125,
+        "music": 0.890625
+      },
+      {
+        "second": 305,
+        "singing": 0.05859375,
+        "speech": 0.015625,
+        "music": 0.8515625
+      },
+      {
+        "second": 306,
+        "singing": 0.04296875,
+        "speech": 0.015625,
+        "music": 0.8515625
+      },
+      {
+        "second": 307,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 308,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 309,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 310,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.95703125
+      },
+      {
+        "second": 311,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 312,
+        "singing": 0.08203125,
+        "speech": 0.015625,
+        "music": 0.8515625
+      },
+      {
+        "second": 313,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 314,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 315,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 316,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 317,
+        "singing": 0.01953125,
+        "speech": 0.015625,
+        "music": 0.91796875
+      },
+      {
+        "second": 318,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 319,
+        "singing": 0.01953125,
+        "speech": 0.03125,
+        "music": 0.94140625
+      },
+      {
+        "second": 320,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.94140625
+      },
+      {
+        "second": 321,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 322,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 323,
+        "singing": 0,
+        "speech": 0.03125,
+        "music": 0.99609375
+      },
+      {
+        "second": 324,
+        "singing": 0,
+        "speech": 0.03125,
+        "music": 0.99609375
+      },
+      {
+        "second": 325,
+        "singing": 0,
+        "speech": 0.01953125,
+        "music": 0.99609375
+      },
+      {
+        "second": 326,
+        "singing": 0,
+        "speech": 0.015625,
+        "music": 0.99609375
+      },
+      {
+        "second": 327,
+        "singing": 0,
+        "speech": 0.01953125,
+        "music": 0.99609375
+      },
+      {
+        "second": 328,
+        "singing": 0,
+        "speech": 0.03125,
+        "music": 0.99609375
+      },
+      {
+        "second": 329,
+        "singing": 0,
+        "speech": 0.015625,
+        "music": 0.99609375
+      },
+      {
+        "second": 330,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 331,
+        "singing": 0.05859375,
+        "speech": 0.03125,
+        "music": 0.73828125
+      },
+      {
+        "second": 332,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.94140625
+      },
+      {
+        "second": 333,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.5859375
+      },
+      {
+        "second": 334,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 335,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 336,
+        "singing": 0.01953125,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 337,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 338,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.890625
+      },
+      {
+        "second": 339,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 340,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 341,
+        "singing": 0.01953125,
+        "speech": 0.03125,
+        "music": 0.94140625
+      },
+      {
+        "second": 342,
+        "singing": 0.1484375,
+        "speech": 0.015625,
+        "music": 0.19921875
+      },
+      {
+        "second": 343,
+        "singing": 0.1484375,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 344,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 345,
+        "singing": 0.04296875,
+        "speech": 0.03125,
+        "music": 0.66796875
+      },
+      {
+        "second": 346,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 347,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 348,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 349,
+        "singing": 0.04296875,
+        "speech": 0.03125,
+        "music": 0.80078125
+      },
+      {
+        "second": 350,
+        "singing": 0.1484375,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 351,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 352,
+        "singing": 0.00390625,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 353,
+        "singing": 0.01171875,
+        "speech": 0.015625,
+        "music": 0.94140625
+      },
+      {
+        "second": 354,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 355,
+        "singing": 0.1484375,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 356,
+        "singing": 0.03125,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 357,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.4140625
+      },
+      {
+        "second": 358,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.890625
+      },
+      {
+        "second": 359,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 360,
+        "singing": 0.26171875,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 361,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 362,
+        "singing": 0.03125,
+        "speech": 0.03125,
+        "music": 0.91796875
+      },
+      {
+        "second": 363,
+        "singing": 0.19921875,
+        "speech": 0.01953125,
+        "music": 0.4140625
+      },
+      {
+        "second": 364,
+        "singing": 0.19921875,
+        "speech": 0.01953125,
+        "music": 0.5859375
+      },
+      {
+        "second": 365,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.80078125
+      },
+      {
+        "second": 366,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 367,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 368,
+        "singing": 0.01953125,
+        "speech": 0.03125,
+        "music": 0.91796875
+      },
+      {
+        "second": 369,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.91796875
+      },
+      {
+        "second": 370,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 371,
+        "singing": 0.04296875,
+        "speech": 0.03125,
+        "music": 0.8515625
+      },
+      {
+        "second": 372,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 373,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 374,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 375,
+        "singing": 0.109375,
+        "speech": 0.03125,
+        "music": 0.5859375
+      },
+      {
+        "second": 376,
+        "singing": 0.03125,
+        "speech": 0.03125,
+        "music": 0.890625
+      },
+      {
+        "second": 377,
+        "singing": 0.19921875,
+        "speech": 0.03125,
+        "music": 0.5
+      },
+      {
+        "second": 378,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 379,
+        "singing": 0.08203125,
+        "speech": 0.03125,
+        "music": 0.80078125
+      },
+      {
+        "second": 380,
+        "singing": 0.05859375,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 381,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.8515625
+      },
+      {
+        "second": 382,
+        "singing": 0.04296875,
+        "speech": 0.015625,
+        "music": 0.890625
+      },
+      {
+        "second": 383,
+        "singing": 0.08203125,
+        "speech": 0.03125,
+        "music": 0.8515625
+      },
+      {
+        "second": 384,
+        "singing": 0.04296875,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 385,
+        "singing": 0.19921875,
+        "speech": 0.03125,
+        "music": 0.33203125
+      },
+      {
+        "second": 386,
+        "singing": 0.1484375,
+        "speech": 0.03125,
+        "music": 0.66796875
+      },
+      {
+        "second": 387,
+        "singing": 0.03125,
+        "speech": 0.0078125,
+        "music": 0.19921875
+      },
+      {
+        "second": 388,
+        "singing": 0,
+        "speech": 0.01171875,
+        "music": 0.00390625
+      },
+      {
+        "second": 389,
+        "singing": 0,
+        "speech": 0.01171875,
+        "music": 0.00390625
+      }
+    ]
+  },
+  {
+    "file": "transition.mp3",
+    "rows": [
+      {
+        "second": 1740,
+        "singing": 0.1484375,
+        "speech": 0.03125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1741,
+        "singing": 0.66796875,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1742,
+        "singing": 0.26171875,
+        "speech": 0.03125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1743,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 1744,
+        "singing": 0.05859375,
+        "speech": 0.03125,
+        "music": 0.73828125
+      },
+      {
+        "second": 1745,
+        "singing": 0.66796875,
+        "speech": 0.01953125,
+        "music": 0.19921875
+      },
+      {
+        "second": 1746,
+        "singing": 0.4140625,
+        "speech": 0.01953125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1747,
+        "singing": 0.5,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 1748,
+        "singing": 0.5859375,
+        "speech": 0.01953125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1749,
+        "singing": 0.5,
+        "speech": 0.01953125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1750,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 1751,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 1752,
+        "singing": 0.26171875,
+        "speech": 0.03125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1753,
+        "singing": 0.5,
+        "speech": 0.015625,
+        "music": 0.26171875
+      },
+      {
+        "second": 1754,
+        "singing": 0.4140625,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1755,
+        "singing": 0.1484375,
+        "speech": 0.03125,
+        "music": 0.5
+      },
+      {
+        "second": 1756,
+        "singing": 0.26171875,
+        "speech": 0.01953125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1757,
+        "singing": 0.19921875,
+        "speech": 0.03125,
+        "music": 0.5
+      },
+      {
+        "second": 1758,
+        "singing": 0.1484375,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 1759,
+        "singing": 0.19921875,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 1760,
+        "singing": 0.26171875,
+        "speech": 0.03125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1761,
+        "singing": 0.26171875,
+        "speech": 0.03125,
+        "music": 0.73828125
+      },
+      {
+        "second": 1762,
+        "singing": 0.5,
+        "speech": 0.03125,
+        "music": 0.5859375
+      },
+      {
+        "second": 1763,
+        "singing": 0.33203125,
+        "speech": 0.03125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1764,
+        "singing": 0.66796875,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1765,
+        "singing": 0.80078125,
+        "speech": 0.03125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1766,
+        "singing": 0.08203125,
+        "speech": 0.03125,
+        "music": 0.66796875
+      },
+      {
+        "second": 1767,
+        "singing": 0.33203125,
+        "speech": 0.03125,
+        "music": 0.1484375
+      },
+      {
+        "second": 1768,
+        "singing": 0.4140625,
+        "speech": 0.03125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1769,
+        "singing": 0.5859375,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 1770,
+        "singing": 0.4140625,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 1771,
+        "singing": 0.73828125,
+        "speech": 0.015625,
+        "music": 0.26171875
+      },
+      {
+        "second": 1772,
+        "singing": 0.19921875,
+        "speech": 0.03125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1773,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 1774,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.66796875
+      },
+      {
+        "second": 1775,
+        "singing": 0.5859375,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1776,
+        "singing": 0.26171875,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1777,
+        "singing": 0.5859375,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1778,
+        "singing": 0.5859375,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 1779,
+        "singing": 0.33203125,
+        "speech": 0.01953125,
+        "music": 0.5
+      },
+      {
+        "second": 1780,
+        "singing": 0.109375,
+        "speech": 0.01953125,
+        "music": 0.73828125
+      },
+      {
+        "second": 1781,
+        "singing": 0.04296875,
+        "speech": 0.04296875,
+        "music": 0.890625
+      },
+      {
+        "second": 1782,
+        "singing": 0.33203125,
+        "speech": 0.03125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1783,
+        "singing": 0.5,
+        "speech": 0.03125,
+        "music": 0.5
+      },
+      {
+        "second": 1784,
+        "singing": 0.19921875,
+        "speech": 0.03125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1785,
+        "singing": 0.5,
+        "speech": 0.01953125,
+        "music": 0.109375
+      },
+      {
+        "second": 1786,
+        "singing": 0.5859375,
+        "speech": 0.01953125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1787,
+        "singing": 0.33203125,
+        "speech": 0.01953125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1788,
+        "singing": 0.33203125,
+        "speech": 0.01953125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1789,
+        "singing": 0.08203125,
+        "speech": 0.01953125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1790,
+        "singing": 0.19921875,
+        "speech": 0.01953125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1791,
+        "singing": 0.66796875,
+        "speech": 0.03125,
+        "music": 0.109375
+      },
+      {
+        "second": 1792,
+        "singing": 0.4140625,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1793,
+        "singing": 0.33203125,
+        "speech": 0.01171875,
+        "music": 0.5859375
+      },
+      {
+        "second": 1794,
+        "singing": 0.4140625,
+        "speech": 0.01953125,
+        "music": 0.5859375
+      },
+      {
+        "second": 1795,
+        "singing": 0.26171875,
+        "speech": 0.03125,
+        "music": 0.5859375
+      },
+      {
+        "second": 1796,
+        "singing": 0.26171875,
+        "speech": 0.03125,
+        "music": 0.4140625
+      },
+      {
+        "second": 1797,
+        "singing": 0.26171875,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1798,
+        "singing": 0.26171875,
+        "speech": 0.03125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1799,
+        "singing": 0.33203125,
+        "speech": 0.01953125,
+        "music": 0.33203125
+      },
+      {
+        "second": 1800,
+        "singing": 0.33203125,
+        "speech": 0.03125,
+        "music": 0.19921875
+      },
+      {
+        "second": 1801,
+        "singing": 0.19921875,
+        "speech": 0.03125,
+        "music": 0.26171875
+      },
+      {
+        "second": 1802,
+        "singing": 0.0078125,
+        "speech": 0.01953125,
+        "music": 0.890625
+      },
+      {
+        "second": 1803,
+        "singing": 0.01171875,
+        "speech": 0.01953125,
+        "music": 0.98046875
+      },
+      {
+        "second": 1804,
+        "singing": 0,
+        "speech": 0.5,
+        "music": 0.33203125
+      },
+      {
+        "second": 1805,
+        "singing": 0,
+        "speech": 0.98046875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1806,
+        "singing": 0,
+        "speech": 0.91796875,
+        "music": 0.04296875
+      },
+      {
+        "second": 1807,
+        "singing": 0,
+        "speech": 0.91796875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1808,
+        "singing": 0,
+        "speech": 0.94140625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1809,
+        "singing": 0,
+        "speech": 0.98046875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1810,
+        "singing": 0,
+        "speech": 0.94140625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1811,
+        "singing": 0,
+        "speech": 0.95703125,
+        "music": 0.01953125
+      },
+      {
+        "second": 1812,
+        "singing": 0,
+        "speech": 0.8515625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1813,
+        "singing": 0,
+        "speech": 0.98046875,
+        "music": 0.03125
+      },
+      {
+        "second": 1814,
+        "singing": 0,
+        "speech": 0.984375,
+        "music": 0.03125
+      },
+      {
+        "second": 1815,
+        "singing": 0,
+        "speech": 0.890625,
+        "music": 0.015625
+      },
+      {
+        "second": 1816,
+        "singing": 0,
+        "speech": 0.96875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1817,
+        "singing": 0,
+        "speech": 0.94140625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1818,
+        "singing": 0,
+        "speech": 0.984375,
+        "music": 0.03125
+      },
+      {
+        "second": 1819,
+        "singing": 0,
+        "speech": 0.98828125,
+        "music": 0.01953125
+      },
+      {
+        "second": 1820,
+        "singing": 0,
+        "speech": 0.9921875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1821,
+        "singing": 0,
+        "speech": 0.96875,
+        "music": 0.015625
+      },
+      {
+        "second": 1822,
+        "singing": 0,
+        "speech": 0.96875,
+        "music": 0.015625
+      },
+      {
+        "second": 1823,
+        "singing": 0,
+        "speech": 0.98046875,
+        "music": 0.03125
+      },
+      {
+        "second": 1824,
+        "singing": 0,
+        "speech": 0.984375,
+        "music": 0.03125
+      },
+      {
+        "second": 1825,
+        "singing": 0,
+        "speech": 0.984375,
+        "music": 0.015625
+      },
+      {
+        "second": 1826,
+        "singing": 0,
+        "speech": 0.98046875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1827,
+        "singing": 0,
+        "speech": 0.91796875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1828,
+        "singing": 0,
+        "speech": 0.98046875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1829,
+        "singing": 0,
+        "speech": 0.94140625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1830,
+        "singing": 0,
+        "speech": 0.73828125,
+        "music": 0.01953125
+      },
+      {
+        "second": 1831,
+        "singing": 0,
+        "speech": 0.95703125,
+        "music": 0.015625
+      },
+      {
+        "second": 1832,
+        "singing": 0,
+        "speech": 0.5859375,
+        "music": 0.015625
+      },
+      {
+        "second": 1833,
+        "singing": 0,
+        "speech": 0.109375,
+        "music": 0.01953125
+      },
+      {
+        "second": 1834,
+        "singing": 0,
+        "speech": 0.109375,
+        "music": 0.01953125
+      },
+      {
+        "second": 1835,
+        "singing": 0,
+        "speech": 0.08203125,
+        "music": 0.015625
+      },
+      {
+        "second": 1836,
+        "singing": 0,
+        "speech": 0.984375,
+        "music": 0.01953125
+      },
+      {
+        "second": 1837,
+        "singing": 0,
+        "speech": 0.98828125,
+        "music": 0.01953125
+      },
+      {
+        "second": 1838,
+        "singing": 0,
+        "speech": 0.890625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1839,
+        "singing": 0,
+        "speech": 0.94140625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1840,
+        "singing": 0,
+        "speech": 0.96875,
+        "music": 0.03125
+      },
+      {
+        "second": 1841,
+        "singing": 0,
+        "speech": 0.73828125,
+        "music": 0.03125
+      },
+      {
+        "second": 1842,
+        "singing": 0,
+        "speech": 0.984375,
+        "music": 0.015625
+      },
+      {
+        "second": 1843,
+        "singing": 0,
+        "speech": 0.98046875,
+        "music": 0.015625
+      },
+      {
+        "second": 1844,
+        "singing": 0,
+        "speech": 0.98828125,
+        "music": 0.015625
+      },
+      {
+        "second": 1845,
+        "singing": 0,
+        "speech": 0.95703125,
+        "music": 0.01953125
+      },
+      {
+        "second": 1846,
+        "singing": 0,
+        "speech": 0.96875,
+        "music": 0.03125
+      },
+      {
+        "second": 1847,
+        "singing": 0,
+        "speech": 0.80078125,
+        "music": 0.01953125
+      },
+      {
+        "second": 1848,
+        "singing": 0,
+        "speech": 0.5859375,
+        "music": 0.03125
+      },
+      {
+        "second": 1849,
+        "singing": 0,
+        "speech": 0.890625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1850,
+        "singing": 0,
+        "speech": 0.984375,
+        "music": 0.01953125
+      },
+      {
+        "second": 1851,
+        "singing": 0,
+        "speech": 0.9921875,
+        "music": 0.03125
+      },
+      {
+        "second": 1852,
+        "singing": 0,
+        "speech": 0.96875,
+        "music": 0.03125
+      },
+      {
+        "second": 1853,
+        "singing": 0,
+        "speech": 0.95703125,
+        "music": 0.01953125
+      },
+      {
+        "second": 1854,
+        "singing": 0,
+        "speech": 0.9921875,
+        "music": 0.01953125
+      },
+      {
+        "second": 1855,
+        "singing": 0,
+        "speech": 0.98828125,
+        "music": 0.015625
+      },
+      {
+        "second": 1856,
+        "singing": 0,
+        "speech": 0.91796875,
+        "music": 0.015625
+      },
+      {
+        "second": 1857,
+        "singing": 0.08203125,
+        "speech": 0.1484375,
+        "music": 0.03125
+      },
+      {
+        "second": 1858,
+        "singing": 0,
+        "speech": 0.94140625,
+        "music": 0.01953125
+      },
+      {
+        "second": 1859,
+        "singing": 0,
+        "speech": 0.98828125,
+        "music": 0.01953125
+      }
+    ]
+  }
+]
