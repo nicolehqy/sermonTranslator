@@ -1,8 +1,20 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
-import {readFileSync} from 'node:fs';
+import {readFileSync, readdirSync} from 'node:fs';
 const source=readFileSync(new URL('../public/audio/hymn-worker.js',import.meta.url),'utf8');
+test('packaged music runtime resolves its audio files without WebAssembly JSPI',async()=>{
+ const vendor=new URL('../public/audio/vendor/',import.meta.url);
+ const context={WebAssembly,TextDecoder,TextEncoder};context.self=context;
+ vm.runInNewContext(readFileSync(new URL('audio_bundle.js',vendor),'utf8'),context);
+ assert.equal(typeof context.Audio.AudioClassifier.createFromOptions,'function');
+ const files=await context.Audio.FilesetResolver.forAudioTasks('/audio/vendor/wasm');
+ assert.match(files.wasmLoaderPath,/audio_wasm_(nosimd_)?internal\.js$/);
+ for(const filename of readdirSync(new URL('wasm/',vendor)).filter(name=>name.endsWith('.js'))){
+  const glue=readFileSync(new URL(`wasm/${filename}`,vendor),'utf8');
+  assert.doesNotMatch(glue,/WebAssembly\.(Suspending|promising)/,filename);
+ }
+});
 async function classify(categories){
  const messages=[];const self={postMessage:m=>messages.push(m)};
  vm.runInNewContext(source,{self,fetch:async()=>({ok:true,status:200,headers:{get:()=>"application/octet-stream"},arrayBuffer:async()=>new ArrayBuffer(8)}),importScripts:()=>{},Audio:{FilesetResolver:{forAudioTasks:async()=>({})},AudioClassifier:{createFromOptions:async()=>({classify:()=>[{classifications:[{categories}]}]})}}});

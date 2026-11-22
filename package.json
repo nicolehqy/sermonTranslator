@@ -9,6 +9,7 @@
     "prepare:audio": "node scripts/prepare-audio.mjs",
     "predev": "npm run prepare:audio",
     "prebuild": "npm run prepare:audio",
+    "pretest": "npm run prepare:audio",
     "test": "node --experimental-transform-types --test tests/*.test.mjs"
   },
   "keywords": [],
@@ -16,7 +17,7 @@
   "license": "ISC",
   "description": "Mandarin to English live sermon translation prototype",
   "dependencies": {
-    "@mediapipe/tasks-audio": "1.2.0",
+    "@mediapipe/tasks-audio": "0.10.32",
     "next": "^16.3.5",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
