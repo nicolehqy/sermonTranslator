@@ -91,3 +91,48 @@ Retest: refresh the page, start and stay quiet for 30 seconds (expect no new tex
 The first church recording was classified strongly as Music but weakly as Singing. The previous three-category singing gate never activated. The worker now exposes Music/Vocal music/Christian music/Gospel music evidence and recognizes chant/humming. Strong music (score >= 0.5) with weak speech (< 0.25) can trigger hymn mode; clearly spoken audio still takes priority. This intentionally also pauses instrumental worship sections. Releasing a suspected-hymn hold discards mixed/queued recordings and replays only positively classified speech, preventing old lyrics from being uploaded on resume. The classifier failure path pauses translation instead of reverting to speech.
 
 `tests/fixtures/hymn-scores.json` contains numerical model scores only, from the two test excerpts, for reproducible policy regression checks. No recording or sermon transcript is included. These fixtures validate the chosen policy on the observed clips, not general accuracy across all churches or devices.
+
+
+## Detector startup reliability
+
+Music detection has a separate 90-second initialization deadline, starting only when
+initialization begins after microphone permission and server configuration checks.
+The 20-second classification watchdog and 15-second audio-level watchdog start only
+after the worker and audio worklet are ready and connected. The page shows
+**Loading music detection…** while initializing. No translation recorder or upload
+queue starts until initialization succeeds. Cancel releases the microphone and
+settles pending initialization; late worker messages cannot restart capture.
+
+Worker failures retain a bounded stage and error message in the on-screen error.
+Stages distinguish runtime loading, WebAssembly support checking, model download,
+model initialization, and classification. Model HTTP failures and expired-access
+redirects are checked explicitly. Diagnostics do not persist or upload audio.
+
+### Acceptance test on iPad Air (4th generation)
+
+Use a deployed preview of this branch on the actual iPad; desktop tests alone do
+not establish Safari compatibility. Keep the page visible and the iPad unlocked.
+
+1. Start from a fresh Safari private tab, sign in, and tap Start. Grant microphone
+   permission. Expect Loading music detection followed by Listening within the
+   90-second initialization limit. If it fails, capture the entire error message
+   and the elapsed time. Do not treat a repeated generic error as proof the new
+   build is installed.
+2. Speak two sentences in the selected source language. Compare recognized source
+   text with translations. Stay quiet for 30 seconds; expect no new invented text.
+3. Play the known hymn excerpt. Expect Hymn mode after sustained music and no
+   translation uploads while hymn mode is active. Return to clear speech; expect
+   translation to resume automatically after speech confirmation.
+4. Cancel during loading, then Start again. Expect one active session, no late
+   callbacks restarting the stopped session, and the microphone released on Stop.
+5. Repeat cold startup on a slower network. In desktop DevTools, throttle an
+   uncached load beyond 20 seconds: it should not hit the old runtime timeout.
+   Block the model request: expect a download-stage error and no translation
+   uploads; unblock and Resume: expect successful recovery.
+6. Complete a service-length rehearsal on the iPad and church Wi-Fi before live use.
+
+Automated coverage includes delayed permission, 30-second initialization, bounded
+startup including a stalled worklet, worker errors, cancellation, runtime stalls,
+expired model access, and withholding capture until readiness. The existing hymn
+policy regression fixtures remain unchanged. An iPad-specific initialization
+failure beyond the timing defect is not yet confirmed or ruled out.

@@ -14,7 +14,7 @@ function clearRecovery() { try { sessionStorage.removeItem(RECOVERY_KEY); } catc
 
 export function useLiveTranslation() {
   const [direction, setDirection] = useState<TranslationDirection>({ sourceLanguage: "zh", targetLanguage: "en" });
-  const [status, setStatus] = useState<"idle" | "requesting" | "listening">("idle");
+  const [status, setStatus] = useState<"idle" | "requesting" | "loading" | "listening">("idle");
   const [sentences, setSentences] = useState<TranscriptSentence[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -121,7 +121,7 @@ export function useLiveTranslation() {
             queue.current?.hold(false);
             if (resume) queue.current?.push(resume.audio, resume.startedAt);
           } else queue.current?.hold(next !== "speech");
-        }, () => { if (valid()) { stop(); setResumeNeeded(true); setError("Music detection is unavailable. Tap Resume to try again."); } },
+        }, detail => { if (valid()) { stop(); setResumeNeeded(true); setError(`Music detection is unavailable. ${detail || ""} Tap Resume to try again.`); } },
         (rms, durationMs) => { if (valid()) capture.current?.observeLevel(rms, durationMs); },
         () => { if (valid()) { stop(); setResumeNeeded(true); setError("Audio detection stopped. Tap Resume to continue listening."); } });
         detector.current = listener;
@@ -164,8 +164,12 @@ export function useLiveTranslation() {
       }
       if (!valid()) return;
       const media = session.current.getStream()!;
-      setStream(media); setStatus("listening"); setRecovering(false);
-      if (!enabled) return;
+      setStream(media); setRecovering(false);
+      if (!enabled) { setStatus("listening"); return; }
+      setStatus("loading");
+      if (listener && !(await listener.start(media))) return;
+      if (!valid()) return;
+      setStatus("listening");
       queue.current = new LatestQueue({
         run: (audio, signal) => {
           if (Date.now() - contextAt.current > LIVE_TIMING.contextAgeMs) context.current = "";
@@ -190,7 +194,6 @@ export function useLiveTranslation() {
         busy: value => { if (valid()) setProcessing(value); },
       });
       beginCapture();
-      if (listener) void listener.start(media);
       watchdog.current = setInterval(() => { if (valid() && Date.now() - lastAudio > 15000 && document.visibilityState === "visible") recover(d); }, 3000);
     } catch (error) {
       if (!valid()) return;
@@ -230,5 +233,5 @@ export function useLiveTranslation() {
     try { localStorage.setItem("sermon-translator-direction", `${d.sourceLanguage}-${d.targetLanguage}`); } catch {}
   }
   function changeEnabled(value: boolean) { stop(); setError(null); setEnabled(value); }
-  return { running: status === "listening", requesting: status === "requesting", stream, audioReceived, sentences, error, notice, hymn, recovering, resumeNeeded, toggle, direction, changeDirection, enabled, changeEnabled, configured, processing };
+  return { running: status === "listening", requesting: status === "requesting" || status === "loading", loadingDetector: status === "loading", stream, audioReceived, sentences, error, notice, hymn, recovering, resumeNeeded, toggle, direction, changeDirection, enabled, changeEnabled, configured, processing };
 }

@@ -10,14 +10,14 @@ const source = stripTypeScriptTypes(readFileSync(new URL('../src/hooks/use-live-
   .replace(/import \{([^}]+)\} from ["']([^"']+)["'];/g, (_, names, path) => `const {${names}} = require(${JSON.stringify(path)});`)
   .replace('export function useLiveTranslation', 'function useLiveTranslation') + '\nexports.useLiveTranslation = useLiveTranslation;';
 const flush = async () => { for (let i=0; i<20; i++) await Promise.resolve(); };
-function harness({ speechError = null, saved = null, permissionDenied = false } = {}) {
+function harness({ speechError = null, saved = null, permissionDenied = false, detectorPending = false } = {}) {
   const slots = []; let index = 0; const effects = []; const timers = new Map(); const handlers = {}; let timerId = 0, reloads = 0, stops = 0;
   const storage = new Map(saved ? [['sermon-recovery-v1', JSON.stringify(saved)]] : []);
-  const intervals = new Map(); let now = Date.now(); let audioUnavailable, classifierUnavailable;
+  const intervals = new Map(); let now = Date.now(); let audioUnavailable, classifierUnavailable, finishDetector;
   const captures = []; let mode; let speechCalls = 0;
   class MicrophoneSession { async start() { if (permissionDenied) throw new DOMException('denied', 'NotAllowedError'); return true; } stop() { stops++; } getStream() { return {active:true}; } }
   class SpeechCapture { constructor(stream, onAudio, onError, onSegment) { this.onSegment=onSegment; this.onAudio=onAudio; this.onError=onError; captures.push(this); } start() {} cancel() { this.cancelled = true; } }
-  class HymnDetector { constructor(callback, unavailable, level, failAudio) { mode=callback; audioUnavailable=failAudio; classifierUnavailable=unavailable; } start() {} stop() {} }
+  class HymnDetector { constructor(callback, unavailable, level, failAudio) { mode=callback; audioUnavailable=failAudio; classifierUnavailable=unavailable; } start() { return detectorPending ? new Promise(resolve => { finishDetector = resolve; }) : Promise.resolve(true); } stop() { finishDetector?.(false); } }
   const react = {
     useRef(value) { const i=index++; return slots[i] ??= {current:value}; },
     useState(value) { const i=index++; if (!(i in slots)) slots[i]=value; return [slots[i], value => { slots[i] = typeof value === 'function' ? value(slots[i]) : value; }]; },
@@ -45,7 +45,7 @@ function harness({ speechError = null, saved = null, permissionDenied = false } 
   vm.runInNewContext(source,scope);
   const render=()=>{index=0;return exports.useLiveTranslation();};
   render(); effects.forEach(fn=>fn());
-  return {render,storage,captures, audioUnavailable:()=>audioUnavailable(), classifierUnavailable:()=>classifierUnavailable(),
+  return {render,storage,captures, ready:()=>finishDetector(true), audioUnavailable:()=>audioUnavailable(), classifierUnavailable:()=>classifierUnavailable(),
     quiet() { now+=8000;captures.at(-1).onSegment(); for(const {fn} of intervals.values())fn(); },
     mode:value=>mode(value),get reloads(){return reloads;},get stops(){return stops;},get speechCalls(){return speechCalls;},
     async timer(ms) { for(const [id,t] of timers) if(t.ms===ms){timers.delete(id);t.fn();break;} await flush(); },
@@ -112,4 +112,18 @@ test('candidate release discards the held recording before resuming speech', asy
  assert.equal(h.speechCalls,0);const old=h.captures.at(-1);
  h.mode('speech');await flush();assert.equal(h.speechCalls,0);assert.equal(old.cancelled,true);
  await h.segment();assert.equal(h.speechCalls,1);h.render().toggle();
+});
+
+
+test('translation capture waits for detector readiness', async()=>{
+ const h=harness({detectorPending:true});h.render().toggle();await flush();
+ assert.equal(h.render().loadingDetector,true);assert.equal(h.render().running,false);
+ assert.equal(h.captures.length,0);assert.equal(h.speechCalls,0);
+ h.ready();await flush();assert.equal(h.render().running,true);assert.equal(h.captures.length,1);
+ h.render().toggle();
+});
+test('Stop during detector loading prevents late capture', async()=>{
+ const h=harness({detectorPending:true});h.render().toggle();await flush();
+ h.render().toggle();h.ready();await flush();
+ assert.equal(h.render().running,false);assert.equal(h.captures.length,0);
 });
